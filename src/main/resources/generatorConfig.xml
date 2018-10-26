@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 设置mysql驱动路径 -->
+	<!-- 此处指定生成针对MyBatis3的DAO -->
+	<context id="context1" targetRuntime="MyBatis3">
+		<plugin type="com.net.business.util.PaginationPlugin"></plugin>
+		<!-- 此处是将Example改名为Criteria 当然 想改成什么都行 
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">  
+	        <property name="searchString" value="Example$" />
+	        <property name="replaceString" value="Criteria" />
+        </plugin>  
+         --> 
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />  
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />  
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" /> 
+		<commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <!-- 去除自动生成的注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator> 
+		<!-- jdbc连接信息 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://duokeyun.mysql.rds.aliyuncs.com:3883/wx_duoke_pub?characterEncoding=utf-8"
+			userId="wx_duoke_pub" password="FzjBHfz@fKj%Cyy#2T%s$HRWRgXA3L" />
+		<!-- 生成vo对象 -->
+		<javaModelGenerator targetPackage="com.net.business.entity" targetProject="./src/main/java">
+		    <property name="enableSubPackages" value="true" />  
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+		<!-- 生成用于查询的Example对象 -->
+		<sqlMapGenerator targetPackage="mybatis" targetProject="./src/main/resources">
+			<property name="enableSubPackages" value="true" /> 
+		</sqlMapGenerator>
+		<!-- 生成DAO的类文件以及配置文件 -->
+		<javaClientGenerator targetPackage="com.net.business.dao" targetProject="./src/main/java" type="XMLMAPPER">
+			<property name="enableSubPackages" value="true" /> 
+		</javaClientGenerator>
+		<!-- 想要生成的数据库表,自动化工具会根据该表的结构生成相应的vo对象 -->
+		<!-- <table tableName="t_dk_user" domainObjectName="DkUser">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>-->
+		<table tableName="t_app_user" domainObjectName="AppUser">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+
+	</context>
+</generatorConfiguration>

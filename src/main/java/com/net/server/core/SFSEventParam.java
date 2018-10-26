@@ -1,0 +1,41 @@
+package com.net.server.core;
+
+public enum SFSEventParam implements ISFSEventParam {
+	ZONE,
+
+	ROOM,
+
+	USER,
+
+	LOGIN_NAME,
+
+	LOGIN_PASSWORD,
+
+	LOGIN_IN_DATA,
+
+	LOGIN_OUT_DATA,
+
+	JOINED_ROOMS,
+
+	PLAYER_ID,
+
+	PLAYER_IDS_BY_ROOM,
+
+	SESSION,
+
+	DISCONNECTION_REASON,
+
+	VARIABLES,
+
+	VARIABLES_MAP,
+
+	RECIPIENT,
+
+	MESSAGE,
+
+	OBJECT,
+
+	UPLOAD_FILE_LIST,
+
+	UPLOAD_HTTP_PARAMS;
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="  
+    http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">  
+
+	<!-- redis 单机连接方案 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" /><!-- 最大能够保持idel状态的对象数  -->
+		<property name="minIdle" value="${redis.minIdle}" /><!-- 最小能够保持idel状态的对象数  -->
+		<property name="maxTotal" value="${redis.maxTotal}" /> <!-- 最大分配的对象数 -->
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" /> <!-- 当调用borrow Object方法时，是否进行有效性检查 -->
+	</bean>
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.host}" type="java.lang.String"/>
+		<constructor-arg index="2" value="${redis.port}" type="int" />
+	</bean>
+	
+	<!-- redis 集群连接方案 
+	<bean name="genericObjectPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+		<property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+		<property name="maxTotal" value="${redis.maxTotal}" />
+		<property name="minIdle" value="${redis.minIdle}" />
+		<property name="maxIdle" value="${redis.maxIdle}" />
+	</bean>
+	
+	<bean id="jedisCluster" class="com.net.business.beans.redis.JedisClusterFactory">
+		<property name="addressConfig">
+			<value>classpath:redis-cluster-hosts.properties</value>
+		</property>
+		<property name="addressKeyPrefix" value="${redis.addressKeyPrefix}" />
+
+		<property name="timeout" value="${redis.timeout}" />
+		<property name="maxRedirections" value="${redis.maxRedirections}" />
+		<property name="genericObjectPoolConfig" ref="genericObjectPoolConfig" />
+	</bean>
+	-->
+	<!-- redis操作类，具体连接方式由jedisClient的ref属性决定 可选项为jedisClusterClient、jedisClient-->
+    <bean name="redisOperate" class="com.net.business.beans.redis.RedisOperate">  
+        <property name="jedisClient" ref="jedisClient" />  
+    </bean>   
+</beans>
+
+	
+	

@@ -1,0 +1,118 @@
+<configuration>
+	<property resource="config.properties" />  
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoder 默认配置为PatternLayoutEncoder -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<appender name="ERRORLOG" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<Encoding>UTF-8</Encoding>  
+        <File>logs/error.log</File>    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+		    <fileNamePattern>logs/error.%d{yyyy-MM-dd}.log</fileNamePattern>   
+		    <maxHistory>30</maxHistory>    
+	    </rollingPolicy>   
+	    <encoder>   
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>   
+	    </encoder>  
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->  
+            <level>ERROR</level>  	
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter> 
+  	</appender>    
+  	<appender name="INTERFACELOG" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<Encoding>UTF-8</Encoding>  
+        <File>logs/interface.log</File>    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+		    <fileNamePattern>logs/interface.%d{yyyy-MM-dd}.log</fileNamePattern>   
+		    <maxHistory>30</maxHistory>    
+	    </rollingPolicy>   
+	    <encoder>   
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] - %msg%n</pattern>   
+	    </encoder>  
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印INFO日志 -->  
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter> 
+  	</appender>
+  	<appender name="INFOLOG" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<Encoding>UTF-8</Encoding>  
+        <File>logs/info.log</File>    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+		    <fileNamePattern>logs/info.%d{yyyy-MM-dd}.log</fileNamePattern>   
+		    <maxHistory>30</maxHistory>    
+	    </rollingPolicy>   
+	    <encoder>   
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>   
+	    </encoder>  
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印INFO日志 -->  
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter> 
+  	</appender>
+  	<appender name="MONITORLOG" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<Encoding>UTF-8</Encoding>  
+        <File>logs/monitor.log</File>    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+		    <fileNamePattern>logs/monitor.%d{yyyy-MM-dd}.log</fileNamePattern>   
+		    <maxHistory>30</maxHistory>    
+	    </rollingPolicy>   
+	    <encoder>   
+	      <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern> -->   
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}%msg%n</pattern>
+	    </encoder>  
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印指定界别的日志 -->  
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter> 
+  	</appender>
+  	<appender name="FIGHTLOG" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
+		<Encoding>UTF-8</Encoding>  
+        <File>logs/fight.log</File>    
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+		    <fileNamePattern>logs/fight.%d{yyyy-MM-dd}.log</fileNamePattern>   
+		    <maxHistory>30</maxHistory>    
+	    </rollingPolicy>   
+	    <encoder>   
+	      <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern> -->   
+	      <pattern>%msg%n</pattern>
+	    </encoder>  
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印指定界别的日志 -->  
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+        </filter> 
+  	</appender>
+  	<appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">
+	    <source>mySource</source>
+	    <sourcePath>mySourcePath</sourcePath>
+	    <type>myApplication</type>
+	    <tags>production</tags>
+	    <host>${redis.host}</host>
+	    <port>${redis.port}</port>
+	    <key>logstash</key>
+	</appender> 
+  	<logger name="monitor" level="INFO" additivity="false">  
+        <appender-ref ref="MONITORLOG" />  
+    </logger> 
+    <logger name="fight" level="INFO" additivity="false">  
+        <appender-ref ref="FIGHTLOG" />  
+    </logger> 
+    <logger name="LOGSTASHLOGGER" level="INFO" additivity="false">  
+        <appender-ref ref="LOGSTASH" />  
+    </logger> 
+    <logger name="INTERFACELOGGER" level="INFO" additivity="false">  
+        <appender-ref ref="INTERFACELOG" />  
+    </logger> 
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="ERRORLOG" />
+		<appender-ref ref="INFOLOG" />
+	</root>
+</configuration> 
